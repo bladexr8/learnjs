@@ -32,7 +32,28 @@ describe('LearnJS', function() {
 	describe('problem view', function() {
 		it('has a title that includes the problem number', function() {
 			var view = learnjs.problemView('1');
-			expect(view.text()).toEqual('Problem #1 Coming soon!');
+			expect(view.find('.title').text()).toEqual('Problem #1');
+		});
+	});
+	
+	describe('answer section', function() {
+		var view;
+		    beforeEach(function() {
+		      view = learnjs.problemView('1');
+		    });
+		it('can check a correct answer by hitting a button', function() {
+			view.find('.answer').val('true');
+			view.find('.check-btn').click();
+			var correctFlash = learnjs.template('correct-flash');
+			var link = correctFlash.find('a');
+			console.log('Result = ' + link.text());
+			
+			expect(link.text()).toEqual('Next Problem!');
+		});
+		it('rejects an incorrect answer', function() {
+			view.find('.answer').val('false');
+			view.find('.check-btn').click();
+			expect(view.find('.result').text()).toEqual('Incorrect!');
 		});
 	});
 	
